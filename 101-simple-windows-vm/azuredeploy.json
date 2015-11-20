@@ -179,8 +179,9 @@
           }
         },
         "dataDisks": [
-          {"name": "dataDisk1",
-          "diskSizeGB": "[parameters(sizeOfDiskInGB)]",
+          {
+            "name": "dataDisk1",
+          "diskSizeGB": "[parameters(sizeEachOfDiskInGB)]",
           "lun": 0,
           "vhd": {
             "Uri": "[variables('dataDisk1VhdName')]"
@@ -202,7 +203,7 @@
              "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
           }
         }
-      }
+    }
   ]
 }
 
