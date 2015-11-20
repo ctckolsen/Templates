@@ -28,13 +28,13 @@
     },
     "location": {
       "type": "string",
-      "defaultvalue": "West US",
+      "defaultValue": "West US",
       "allowedValues": [
         "West US",
         "East US 2"
       ],
       "metadata": {
-        "description": "Restricts choices to where premium stroage is located in the US."
+        "description": "Restrict choices"
       }
     },
     "windowsOSVersion": {
@@ -49,10 +49,10 @@
         "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter."
       }
     },
-    "sizeOfEachDiskInGB": {
+    "sizeOfDiskInGB": {
       "type": "string",
       "metadata": {
-        "description": "Size of each data disk in GB"
+        "description": "Size of the empty data disk in GB"
       }
     }
   },
@@ -73,7 +73,7 @@
     "virtualNetworkName": "MyVNET",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "dataDisk1VhdName": "[concat(http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('vmName'),'dataDisk1.vhd')]"
+    "dataDisk1VhdName": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('vmName'),'dataDisk1.vhd')]"
   },
   "resources": [
     {
@@ -176,20 +176,19 @@
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
-          }
-        },
-        "dataDisks": [
-          {
-            "name": "dataDisk1",
-          "diskSizeGB": "[parameters(sizeOfEachDiskInGB)]",
-          "lun": 0,
-          "vhd": {
-            "Uri": "[variables('dataDisk1VhdName')]"
           },
-          "createOption": "Empty"
-          }
-        ]
-      },
+          "dataDisks": [
+            {
+              "name": "datadisk1",
+              "diskSizeGB": "[parameters('sizeOfDiskInGB')]",
+              "lun": 0,
+              "vhd": {
+                "Uri": "[variables('dataDisk1VhdName')]"
+              },
+              "createOption": "Empty"
+            }
+          ]
+        },
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -203,6 +202,7 @@
              "storageUri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net')]"
           }
         }
+      }
     }
   ]
 }
